@@ -1,3 +1,4 @@
+%% $Id$
 %% File: `csplainnat.bst' for use with natbib package
 %% This is a modification of `plainnat.bst' for Czech references style 
 %% (According to "CSN ISO 690: Bibliograficke citace. Obsah, forma a struktura").
@@ -322,7 +323,7 @@ FUNCTION {format.doi}
 FUNCTION {format.title}
 { title empty$
     { "" }
-    { title "t" change.case$ }
+    { title }
   if$
 }
 
@@ -560,7 +561,7 @@ FUNCTION {format.vol.num.pages}
 { volume field.or.null
   number empty$
     'skip$
-    { "\penalty0 (" number * ")" * *
+    { "\penalty0 " number * *
       volume empty$
         { "there's a number but no volume in " cite$ * warning$ }
         'skip$
@@ -571,7 +572,7 @@ FUNCTION {format.vol.num.pages}
     'skip$
     { duplicate$ empty$
         { pop$ format.pages }
-        { ":\penalty0 " * pages n.dashify * }
+        { ", s.~" * pages n.dashify * }
       if$
     }
   if$
@@ -729,11 +730,11 @@ FUNCTION {article}
   new.block
   crossref missing$
     { journal emphasize "journal" output.check
+      format.date "year" output.check
       eid empty$
         { format.vol.num.pages output }
         { format.vol.num.eid output }
       if$
-      format.date "year" output.check
     }
     { format.article.crossref output.nonnull
       eid empty$
