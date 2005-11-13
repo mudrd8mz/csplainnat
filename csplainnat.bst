@@ -1,21 +1,16 @@
-%% File: `plainnat.bst'
-%% A modification of `plain.bst' for use with natbib package 
+%% File: `csplainnat.bst' for use with natbib package
+%% This is a modification of `plainnat.bst' for Czech references style 
+%% (According to "CSN ISO 690: Bibliograficke citace. Obsah, forma a struktura").
+%% Modifications are commented, look for 'ZMENA' keyword -- it means 'CHANGE' in Czech.
 %%
-%% Copyright 1993-2005 Patrick W Daly
-%% Max-Planck-Institut f\"ur Sonnensystemforschung
-%% Max-Planck-Str. 2
-%% D-37191 Katlenburg-Lindau
-%% Germany
-%% E-mail: daly@mps.mpg.de
+%% Original plainnat.bst by Patrick W Daly
+%% Modifications by David Mudr{\'{a}}k mudrd8mz@uxit.pedf.cuni.cz
 %%
 %% This program can be redistributed and/or modified under the terms
 %% of the LaTeX Project Public License Distributed from CTAN
 %% archives in directory macros/latex/base/lppl.txt; either
 %% version 1 of the License, or any later version.
 %%
- % Version and source file information:
- % \ProvidesFile{natbst.mbs}[2005/01/07 1.8 (PWD)]
- %
  % BibTeX `plainnat' family
  %   version 0.99b for BibTeX versions 0.99a or later,
  %   for LaTeX versions 2.09 and 2e.
@@ -85,7 +80,7 @@ FUNCTION {init.state.consts}
   #3 'after.block :=
 }
 
-STRINGS { s t }
+STRINGS { s t t1 t2 } %  ZMENA mudrd8mz 2005-10-12 pridavam t1, t2
 
 FUNCTION {output.nonnull}
 { 's :=
@@ -211,25 +206,37 @@ FUNCTION {emphasize}
   if$
 }
 
+FUNCTION {capitalize}  %  ZMENA mudrd8mz 2005-10-12 pridavam novou funkci
+{
+  duplicate$ empty$
+    { pop$ "" }
+    { "u" change.case$ }
+  if$
+}
+
+
 INTEGERS { nameptr namesleft numnames }
 
-FUNCTION {format.names}
+FUNCTION {format.names.full}
 { 's :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=
+    { s nameptr "{ll}" format.name$ 't1 :=          % ZMENA mudrd8mz 2005-10-12 
+      t1 capitalize 't1 :=                          % ZMENA mudrd8mz 2005-10-12 
+      s nameptr "{, f.}{~j.}" format.name$ 't2 :=   % ZMENA mudrd8mz 2005-10-12
+      t1 t2 * 't :=
       nameptr #1 >
         { namesleft #1 >
-            { ", " * t * }
+            { " -- " * t * } % ZMENA mudrd8mz 2005-10-13 : pomlcka mezi autory
             { numnames #2 >
-                { "," * }
+                { "" * } % ZMENA mudrd8mz 2005-10-12 
                 'skip$
               if$
-              t "others" =
+              t "OTHERS" = % ZMENA mudrd8mz 2005-10-12 kvuli capitalize 
                 { " et~al." * }
-                { " and " * t * }
+                { " -- " * t * } % ZMENA mudrd8mz 2005-10-12 : pomlcka mezi poslednim a predposl. autorem
               if$
             }
           if$
@@ -240,6 +247,22 @@ FUNCTION {format.names}
       namesleft #1 - 'namesleft :=
     }
   while$
+}
+
+FUNCTION {format.names.short} %  ZMENA mudrd8mz 2005-10-14 pridavam verzi pro vic autoru
+{ 's :=
+  s #1 "{ll}" format.name$ 't1 :=          
+  t1 capitalize 't1 :=                    
+  s #1 "{, f.}{~j.}" format.name$ 't2 := 
+  t1 t2 * " et~al." *
+}
+
+FUNCTION {format.names}
+{   duplicate$
+    num.names$ #3 >             
+        {format.names.short} % pokud ma citace vice nez 3 autory, uvadi se pouze PRVNI et al.
+        {format.names.full}  % pokud ma citace max 3 autory, uvadi se vsichni
+    if$
 }
 
 FUNCTION {format.key}
@@ -261,8 +284,8 @@ FUNCTION {format.editors}
     { "" }
     { editor format.names
       editor num.names$ #1 >
-        { ", editors" * }
-        { ", editor" * }
+        { " (Ed.)" * } % ZMENA mudrd8mz 2005-10-12 menim zobrazovani
+        { " (Ed.)" * }
       if$
     }
   if$
@@ -303,6 +326,7 @@ FUNCTION {format.title}
   if$
 }
 
+
 FUNCTION {format.full.names}
 {'s :=
   #1 'nameptr :=
@@ -322,7 +346,7 @@ FUNCTION {format.full.names}
               if$
               t "others" =
                 { " et~al." * }
-                { " and " * t * }
+                { ", " * t * } %  ZMENA mudrd8mz 2005-10-12 
               if$
             }
           if$
@@ -451,10 +475,10 @@ FUNCTION {either.or.check}
 FUNCTION {format.bvolume}
 { volume empty$
     { "" }
-    { "volume" volume tie.or.space.connect
+    { "" volume tie.or.space.connect %  ZMENA mudrd8mz 2005-10-12 vypoustim "volume"
       series empty$
         'skip$
-        { " of " * series emphasize * }
+        { " / " * series emphasize * } % ZMENA mudrd8mz 2005-10-12 menim "of" na "/"
       if$
       "volume and number" number either.or.check
     }
@@ -466,13 +490,13 @@ FUNCTION {format.number.series}
     { number empty$
         { series field.or.null }
         { output.state mid.sentence =
-            { "number" }
-            { "Number" }
+            { "è." } % ZMENA mudrd8mz 2005-10-12 menim "number"
+            { "È." }
           if$
           number tie.or.space.connect
           series empty$
             { "there's a number but no series in " cite$ * warning$ }
-            { " in " * series * }
+            { " v " * series * } % ZMENA mudrd8mz 2005-10-12 menim  "in"
           if$
         }
       if$
@@ -595,7 +619,7 @@ FUNCTION {format.in.ed.booktitle}
     { "" }
     { editor empty$
         { "In " booktitle emphasize * }
-        { "In " format.editors * ", " * booktitle emphasize * }
+        { "In " format.editors * " " * booktitle emphasize * } %  ZMENA mudrd8mz 2005-10-12 
       if$
     }
   if$
@@ -726,6 +750,21 @@ FUNCTION {article}
   fin.entry
 }
 
+FUNCTION {online} %  ZMENA mudrd8mz 2005-10-12 zcela pridavam
+{ output.bibitem
+  format.authors output
+  new.block
+  format.btitle " [online]" * output
+  new.block
+  note output
+  new.block
+  "[cit.~" format.date * "]" * output
+  new.block
+  "Dostupn{\'{e}} na " howpublished * "" * output
+  fin.entry
+}
+
+
 FUNCTION {book}
 { output.bibitem
   author empty$
@@ -742,12 +781,12 @@ FUNCTION {book}
   new.block
   format.btitle "title" output.check
   crossref missing$
-    { format.bvolume output
-      new.block
+    { new.block
+      format.bvolume output
       format.number.series output
       new.sentence
-      publisher "publisher" output.check
-      address output
+      address ": " * publisher *   % ZMENA mudrd8mz 2005-10-12 menim styl adresy a vydavatele
+      "publisher" output.check      
     }
     { new.block
       format.book.crossref output.nonnull
@@ -755,11 +794,11 @@ FUNCTION {book}
   if$
   format.edition output
   format.date "year" output.check
-  format.isbn output
   format.doi output
   format.url output
   new.block
   note output
+  format.isbn output
   fin.entry
 }
 
@@ -773,11 +812,11 @@ FUNCTION {booklet}
   howpublished output
   address output
   format.date output
-  format.isbn output
   format.doi output
   format.url output
   new.block
   note output
+  format.isbn output
   fin.entry
 }
 
@@ -812,11 +851,11 @@ FUNCTION {inbook}
   if$
   format.edition output
   format.date "year" output.check
-  format.isbn output
   format.doi output
   format.url output
   new.block
   note output
+  format.isbn output
   fin.entry
 }
 
@@ -833,8 +872,10 @@ FUNCTION {incollection}
       format.number.series output
       format.chapter.pages output
       new.sentence
-      publisher "publisher" output.check
-      address output
+      address ": " * publisher *   % ZMENA mudrd8mz 2005-10-12 menim styl adresy a vydavatele
+      "publisher" output.check      
+      %publisher "publisher" output.check
+      %address output
       format.edition output
       format.date "year" output.check
     }
@@ -842,10 +883,10 @@ FUNCTION {incollection}
       format.chapter.pages output
     }
   if$
-  format.isbn output
   format.doi output
   format.url output
   new.block
+  format.isbn output
   note output
   fin.entry
 }
@@ -880,10 +921,10 @@ FUNCTION {inproceedings}
       format.pages output
     }
   if$
-  format.isbn output
   format.doi output
   format.url output
   new.block
+  format.isbn output
   note output
   fin.entry
 }
@@ -971,10 +1012,10 @@ FUNCTION {proceedings}
   new.sentence
   organization output
   publisher output
-  format.isbn output
   format.doi output
   format.url output
   new.block
+  format.isbn output
   note output
   fin.entry
 }
@@ -1108,7 +1149,7 @@ FUNCTION {format.lab.names}
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
             { " et~al." * }
-            { " and " * s #2 "{vv~}{ll}" format.name$ * }
+            { " -- " * s #2 "{vv~}{ll}" format.name$ * } % ZMENA mudrd8mz 2005-10-12 menim "and"
           if$
         }
       if$
