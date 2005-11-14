@@ -2,7 +2,8 @@
 %% File: `csplainnat.bst' for use with natbib package
 %% This is a modification of `plainnat.bst' for Czech references style 
 %% (According to "CSN ISO 690: Bibliograficke citace. Obsah, forma a struktura").
-%% Modifications are commented, look for 'ZMENA' keyword -- it means 'CHANGE' in Czech.
+%% Some modifications are commented, look for 'ZMENA' -- it means 'CHANGE' in Czech.
+%% For more detailed info use svn repository svn://kraken.pedf.cuni.cz/csplainnat/
 %%
 %% Original plainnat.bst by Patrick W Daly
 %% Modifications by David Mudr{\'{a}}k mudrd8mz@uxit.pedf.cuni.cz
