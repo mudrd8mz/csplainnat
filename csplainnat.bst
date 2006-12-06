@@ -787,7 +787,7 @@ FUNCTION {book}
       format.bvolume output
       format.number.series output
       new.sentence
-      address ": " * publisher *   % ZMENA mudrd8mz 2005-10-12 menim styl adresy a vydavatele
+      address "~: " * publisher *   % ZMENA mudrd8mz 2005-10-12 menim styl adresy a vydavatele
       "publisher" output.check      
     }
     { new.block
