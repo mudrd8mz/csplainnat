@@ -41,6 +41,8 @@
  % Works with identical authors and year are further sorted by
  %   citation key, to preserve any natural sequence.
  %
+ % CHANGES
+ % * Added "@ONLINE" item type with added "cited" field.
 ENTRY
   { address
     author
@@ -69,6 +71,7 @@ ENTRY
     url
     volume
     year
+    cited
   }
   {}
   { label extra.label sort.label short.list }
@@ -310,7 +313,7 @@ FUNCTION {format.issn}
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { new.block "URL \url{" url * "}" * }
+    { new.block "Dostupn{\'{e}} z: \url{" url * "}" * }
   if$
 }
 
@@ -757,12 +760,21 @@ FUNCTION {online} %  ZMENA mudrd8mz 2005-10-12 zcela pridavam
   format.authors output
   new.block
   format.btitle " [online]" * output
-  new.block
+  new.sentence
+  publisher missing$
+    'skip$
+    { publisher output }
+  if$
+  year missing$
+    'skip$
+    { format.date "year" output.check }
+  if$
+  new.sentence
+  "[cit.~" cited * "]" * output
+  new.sentence
   note output
-  new.block
-  "[cit.~" format.date * "]" * output
-  new.block
-  "Dostupn{\'{e}} na " howpublished * "" * output
+  new.sentence
+  format.url output
   fin.entry
 }
 
