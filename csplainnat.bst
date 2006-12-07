@@ -770,7 +770,10 @@ FUNCTION {online} %  ZMENA mudrd8mz 2005-10-12 zcela pridavam
     { format.date "year" output.check }
   if$
   new.sentence
-  "[cit.~" cited * "]" * output
+  cited missing$
+    'skip$
+    { "[cit.~" cited * "]" * output }
+  if$
   new.sentence
   note output
   new.sentence
