@@ -2,11 +2,14 @@
 %% File: `csplainnat.bst' for use with natbib package
 %% This is a modification of `plainnat.bst' for Czech references style 
 %% (According to "CSN ISO 690: Bibliograficke citace. Obsah, forma a struktura").
-%% Some modifications are commented, look for 'ZMENA' -- it means 'CHANGE' in Czech.
+%% Some modifications are commented, look for the keyword 'CHANGE'
 %% For more detailed info use svn repository svn://kraken.pedf.cuni.cz/csplainnat/
 %%
 %% Original plainnat.bst by Patrick W Daly
 %% Modifications by David Mudr{\'{a}}k mudrd8mz@uxit.pedf.cuni.cz
+%% 
+%% MAJOR MODIFICATIONS
+%% * Added "@ONLINE" item type with added "cited" field.
 %%
 %% This program can be redistributed and/or modified under the terms
 %% of the LaTeX Project Public License Distributed from CTAN
@@ -41,8 +44,6 @@
  % Works with identical authors and year are further sorted by
  %   citation key, to preserve any natural sequence.
  %
- % CHANGES
- % * Added "@ONLINE" item type with added "cited" field.
 ENTRY
   { address
     author
@@ -85,7 +86,7 @@ FUNCTION {init.state.consts}
   #3 'after.block :=
 }
 
-STRINGS { s t t1 t2 } %  ZMENA mudrd8mz 2005-10-12 pridavam t1, t2
+STRINGS { s t t1 t2 } %  CHANGE mudrd8mz 2005-10-12 adding t1, t2
 
 FUNCTION {output.nonnull}
 { 's :=
@@ -211,7 +212,7 @@ FUNCTION {emphasize}
   if$
 }
 
-FUNCTION {capitalize}  %  ZMENA mudrd8mz 2005-10-12 pridavam novou funkci
+FUNCTION {capitalize}  %  CHANGE mudrd8mz 2005-10-12 adding new function
 {
   duplicate$ empty$
     { pop$ "" }
@@ -228,20 +229,20 @@ FUNCTION {format.names.full}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr "{ll}" format.name$ 't1 :=          % ZMENA mudrd8mz 2005-10-12 
-      t1 capitalize 't1 :=                          % ZMENA mudrd8mz 2005-10-12 
-      s nameptr "{, f.}{~j.}" format.name$ 't2 :=   % ZMENA mudrd8mz 2005-10-12
+    { s nameptr "{ll}" format.name$ 't1 :=          % CHANGE mudrd8mz 2005-10-12 
+      t1 capitalize 't1 :=                          % CHANGE mudrd8mz 2005-10-12 
+      s nameptr "{, f.}{~j.}" format.name$ 't2 :=   % CHANGE mudrd8mz 2005-10-12
       t1 t2 * 't :=
       nameptr #1 >
         { namesleft #1 >
-            { " -- " * t * } % ZMENA mudrd8mz 2005-10-13 : pomlcka mezi autory
+            { " -- " * t * } % CHANGE mudrd8mz 2005-10-13 : adding "--"
             { numnames #2 >
-                { "" * } % ZMENA mudrd8mz 2005-10-12 
+                { "" * } % CHANGE mudrd8mz 2005-10-12 
                 'skip$
               if$
-              t "OTHERS" = % ZMENA mudrd8mz 2005-10-12 kvuli capitalize 
+              t "OTHERS" = % CHANGE mudrd8mz 2005-10-12 because of capitalize 
                 { " et~al." * }
-                { " -- " * t * } % ZMENA mudrd8mz 2005-10-12 : pomlcka mezi poslednim a predposl. autorem
+                { " -- " * t * } % CHANGE mudrd8mz 2005-10-12 : between the last and the one before
               if$
             }
           if$
@@ -254,7 +255,7 @@ FUNCTION {format.names.full}
   while$
 }
 
-FUNCTION {format.names.short} %  ZMENA mudrd8mz 2005-10-14 pridavam verzi pro vic autoru
+FUNCTION {format.names.short} %  CHANGE mudrd8mz 2005-10-14 adding more authors version
 { 's :=
   s #1 "{ll}" format.name$ 't1 :=          
   t1 capitalize 't1 :=                    
@@ -289,7 +290,7 @@ FUNCTION {format.editors}
     { "" }
     { editor format.names
       editor num.names$ #1 >
-        { " (Ed.)" * } % ZMENA mudrd8mz 2005-10-12 menim zobrazovani
+        { " (Ed.)" * } % CHANGE mudrd8mz 2005-10-12
         { " (Ed.)" * }
       if$
     }
@@ -351,7 +352,7 @@ FUNCTION {format.full.names}
               if$
               t "others" =
                 { " et~al." * }
-                { ", " * t * } %  ZMENA mudrd8mz 2005-10-12 
+                { ", " * t * } %  CHANGE mudrd8mz 2005-10-12 
               if$
             }
           if$
@@ -480,10 +481,10 @@ FUNCTION {either.or.check}
 FUNCTION {format.bvolume}
 { volume empty$
     { "" }
-    { "" volume tie.or.space.connect %  ZMENA mudrd8mz 2005-10-12 vypoustim "volume"
+    { "" volume tie.or.space.connect %  CHANGE mudrd8mz 2005-10-12 removing "volume"
       series empty$
         'skip$
-        { " / " * series emphasize * } % ZMENA mudrd8mz 2005-10-12 menim "of" na "/"
+        { " / " * series emphasize * } % CHANGE mudrd8mz 2005-10-12  "of" --> "/"
       if$
       "volume and number" number either.or.check
     }
@@ -495,13 +496,13 @@ FUNCTION {format.number.series}
     { number empty$
         { series field.or.null }
         { output.state mid.sentence =
-            { "è." } % ZMENA mudrd8mz 2005-10-12 menim "number"
-            { "È." }
+            { "{\v{c}}." } % CHANGE mudrd8mz 2005-10-12 "{\v{c}}" instead of "number"
+            { "{\v{C}}." }
           if$
           number tie.or.space.connect
           series empty$
             { "there's a number but no series in " cite$ * warning$ }
-            { " v " * series * } % ZMENA mudrd8mz 2005-10-12 menim  "in"
+            { " v " * series * } % CHANGE mudrd8mz 2005-10-12 "in" --> "v"
           if$
         }
       if$
@@ -624,7 +625,7 @@ FUNCTION {format.in.ed.booktitle}
     { "" }
     { editor empty$
         { "In " booktitle emphasize * }
-        { "In " format.editors * " " * booktitle emphasize * } %  ZMENA mudrd8mz 2005-10-12 
+        { "In " format.editors * " " * booktitle emphasize * } %  CHANGE mudrd8mz 2005-10-12 
       if$
     }
   if$
@@ -755,7 +756,7 @@ FUNCTION {article}
   fin.entry
 }
 
-FUNCTION {online} %  ZMENA mudrd8mz 2005-10-12 zcela pridavam
+FUNCTION {online} %  CHANGE mudrd8mz 2005-10-12 addign new item type
 { output.bibitem
   format.authors output
   new.block
@@ -802,7 +803,7 @@ FUNCTION {book}
       format.bvolume output
       format.number.series output
       new.sentence
-      address "~: " * publisher *   % ZMENA mudrd8mz 2005-10-12 menim styl adresy a vydavatele
+      address "~: " * publisher *   % CHANGE mudrd8mz 2005-10-12 
       "publisher" output.check      
     }
     { new.block
@@ -889,7 +890,7 @@ FUNCTION {incollection}
       format.number.series output
       format.chapter.pages output
       new.sentence
-      address ": " * publisher *   % ZMENA mudrd8mz 2005-10-12 menim styl adresy a vydavatele
+      address ": " * publisher *   % CHANGE mudrd8mz 2005-10-12
       "publisher" output.check      
       %publisher "publisher" output.check
       %address output
@@ -1166,7 +1167,7 @@ FUNCTION {format.lab.names}
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
             { " et~al." * }
-            { " -- " * s #2 "{vv~}{ll}" format.name$ * } % ZMENA mudrd8mz 2005-10-12 menim "and"
+            { " -- " * s #2 "{vv~}{ll}" format.name$ * } % CHANGE mudrd8mz 2005-10-12: changed "and"
           if$
         }
       if$
