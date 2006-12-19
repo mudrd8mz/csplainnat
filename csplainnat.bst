@@ -566,7 +566,7 @@ FUNCTION {format.vol.num.pages}
 { volume field.or.null
   number empty$
     'skip$
-    { "\penalty0 " number * *
+    { "\penalty0, " number * *
       volume empty$
         { "there's a number but no volume in " cite$ * warning$ }
         'skip$
@@ -587,7 +587,7 @@ FUNCTION {format.vol.num.eid}
 { volume field.or.null
   number empty$
     'skip$
-    { "\penalty0 (" number * ")" * *
+    { "\penalty0, " number * *
       volume empty$
         { "there's a number but no volume in " cite$ * warning$ }
         'skip$
@@ -735,6 +735,7 @@ FUNCTION {article}
   new.block
   crossref missing$
     { journal emphasize "journal" output.check
+      new.sentence
       format.date "year" output.check
       eid empty$
         { format.vol.num.pages output }
