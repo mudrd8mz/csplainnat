@@ -548,8 +548,8 @@ FUNCTION {format.pages}
 { pages empty$
     { "" }
     { pages multi.page.check
-        { "pages" pages n.dashify tie.or.space.connect }
-        { "page" pages tie.or.space.connect }
+        { "s.~" pages n.dashify tie.or.space.connect }  % CHANGE mudrd8mz 2007-03-15: 'pages' -> 's.'
+        { "s.~" pages tie.or.space.connect }            % CHANGE mudrd8mz 2007-03-15: 'pages' -> 's.'
       if$
     }
   if$
@@ -644,9 +644,7 @@ FUNCTION {empty.misc.check}
 FUNCTION {format.thesis.type}
 { type empty$
     'skip$
-    { pop$
-      type "t" change.case$
-    }
+    { pop$ type } % CHANGE mudrd8mz 2007-03-15: Do not lowercase the thesis type
   if$
 }
 
