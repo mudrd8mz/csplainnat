@@ -1,0 +1,83 @@
+%
+% $Id$
+%
+\documentclass[a4paper,12pt,notitlepage]{article}
+\usepackage[latin2]{inputenc}   % vstupni kodovani
+\usepackage{czech}              % ceske nazvy sekci
+\usepackage{natbib}             % sazba pouzite literatury
+\usepackage{url}                % sazba URL
+\usepackage[pdftex]{graphicx}   % podpora grafiky ve formatu PDF
+
+\DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>}\urlstyle{tt}}  %rm/sf/tt
+\renewcommand{\emph}[1]{\textsl{#1}}    % melo by byt kurziva nebo sklonene,
+
+\author{David Mudrák}
+\title{Ukázky citací generovaných Bib\TeX{} stylem csplainnat.bst}
+
+\begin{document}
+\csprimeson             % `` '' se budou sazet jako ceske
+\maketitle
+
+\begin{abstract}
+    Dokument obsahuje nesouvislé vìty s ukázkami odkazù na rùzné typy citované
+    literatury a seznam pou¾ité literatury, jak jej generuje styl
+    csplainnat.bst\footnote{\url{http://kraken.pedf.cuni.cz/texing/}}.
+\end{abstract}
+
+\section{Ukázky odkazování v textu}
+
+Dovednost dekomponovat celek na systém dílèích strukturovaných elementù a jejich
+následná reprezentace v syntaxi znaèkovacího jazyka lze pova¾ovat za jeden z
+klíèových pøedpokladù pro tvorbu webových prezentací
+\citep{stipekphd,prochazkaphd}.
+
+Klíèové kompetence zahrnují schopnosti, dovednosti, postoje, hodnoty a dal¹í
+charakteristiky osobnosti, které umo¾òují èlovìku jednat adekvátnì a efektivnì v
+rùzných pracovních a ¾ivotních situacích.'' \citep[s.~13]{belz01}.
+    
+Národní program rozvoje vzdìlávání v Èeské republice \citep{bilakniha}
+strukturuje kompetence ve vazbì na zprávu komisaøe J.~Delorse a jeho pojetí ètyø
+pilíøù vzdìlávání v souèasném svìtì \citep{delors}. Jako klíèové kompetence jsou
+v tomto smyslu jsou uvádìny: (1)~získávání, analýza a organizace informací,
+(2)~pøedávání my¹lenek a informací, (3)~plánování a organizace pracovních
+aktivit, (4)~spolupráce s ostatními a práce v týmu, (5)~pou¾ívání systémových
+postupù a metod, (6)~zvládnutí logických úvah a strategií øe¹ení problémù a
+(7)~schopnost vyu¾ívat technická zaøízení \citep[s.~50]{rambousek05a}.
+    
+Vùbec první pou¾ití anglického termínu \emph{``information literacy''} je
+pøisuzováno Paulu Zurkowskému, prezidentu Information Industry Association
+\citep{zurkowsky74}. Ve stejné dobì pùsobil u té¾e spoleènosti jako konzultant a
+Zurkowského spolupracovník Forest W.~Horton, který koncept informaèní
+gramotnosti (a zejména jeho vyhranìní vùèi gramotnosti poèítaèové) dále rozvíjel
+\citep{horton75,horton85}.
+    
+Jsou to lidé pøipraveni na celo¾ivotní vzdìlávání, proto¾e umìjí v¾dy nalézt
+po¾adovanou informaci k vyøe¹ení libovolného úkolu nebo k uèinìní rozhodnutí''
+\citep[tøetí odst.]{ala89}. Pro úèely této práce je koncept informaèní
+gramotnosti vymezen soustavou procesù, které se spolupodílejí na vzájemné
+transformaci dat, informací a znalostí \citep{mudrak:zamer05}.
+    
+Sí»ová generace \emph{(net generation)} vyu¾ívá poèítaèové sítì pro komunikaci,
+øe¹ení problémù èi vyhledávání po¾adovaných informací zcela pøirozenì
+\citep{tapscot:growing98}. Podle výsledkù rozsáhlého prùzkumu \citep{pip05}
+realizovaného mezi mláde¾í ve vìku 12 -- 17 let v USA se 57\,\% teenagerù s
+mo¾ností pøipojení na Internet podílelo na tvorbì jeho obsahu.
+    
+Odborná èeská pedagogická literatura se problematice informaèní výchovy vìnuje
+spí¹e okrajovì.  Vyplývá tak z výsledkù, k nim¾ dospìl \citet{zounek04poskole},
+kdy¾ analyzoval pomìrné zastoupení èlánkù zabývajících se ICT v prùbìhu let 1998
+a¾ 2002. Vycházíme z pøedstavy úèinného pøedávání poznání jako klíèové funkce
+¹kolního vzdìlávání \citep[s.~58]{stech04pedagogika1}. 
+    
+Rozpracování a popularizace my¹lenky organizátorù postupu je pøisuzováno
+D.\,P.\,Ausubelovi (\citeyear{ausubel60}). \ldots{} Tím se napomáhá dosa¾ení
+celistvého souladu (\emph{integrative reconciliation}) jednotlivých subdomén
+znalostí a schopnosti porozumìt vztahùm mezi základními koncepty celé domény
+\citep{ausubel78}. \citet{hyerle96} rozdìluje tyto vizualizaèní nástroje do tøí
+kategorií podle jejich primárního úèelu.
+
+\def\refname{Pou¾itá literatura a prameny}
+\bibliographystyle{csplainnat}
+\bibliography{literatura}
+
+\end{document}
