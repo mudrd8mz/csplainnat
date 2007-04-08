@@ -566,7 +566,7 @@ FUNCTION {format.vol.num.pages}
 { volume field.or.null
   number empty$
     'skip$
-    { "\penalty0, " number * *
+    { ", " number * *
       volume empty$
         { "there's a number but no volume in " cite$ * warning$ }
         'skip$
