@@ -548,8 +548,8 @@ FUNCTION {format.pages}
 { pages empty$
     { "" }
     { pages multi.page.check
-        { "s.~" pages n.dashify tie.or.space.connect }  % CHANGE mudrd8mz 2007-03-15: 'pages' -> 's.'
-        { "s.~" pages tie.or.space.connect }            % CHANGE mudrd8mz 2007-03-15: 'pages' -> 's.'
+        { "s." pages n.dashify tie.or.space.connect }  % CHANGE mudrd8mz 2007-03-15: 'pages' -> 's.'
+        { "s." pages tie.or.space.connect }            % CHANGE mudrd8mz 2007-03-15: 'pages' -> 's.'
       if$
     }
   if$
