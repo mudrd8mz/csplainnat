@@ -608,7 +608,7 @@ FUNCTION {format.chapter.pages}
 { chapter empty$
     'format.pages
     { type empty$
-        { "chapter" }
+        { "" }   % CHANGE mudrd8mz 2008-04-08 removing the word "chapter"
         { type "l" change.case$ }
       if$
       chapter tie.or.space.connect
@@ -887,7 +887,6 @@ FUNCTION {incollection}
     { format.in.ed.booktitle "booktitle" output.check
       format.bvolume output
       format.number.series output
-      format.chapter.pages output
       new.sentence
       address ": " * publisher *   % CHANGE mudrd8mz 2005-10-12
       "publisher" output.check      
@@ -895,6 +894,8 @@ FUNCTION {incollection}
       %address output
       format.edition output
       format.date "year" output.check
+      new.sentence
+      format.chapter.pages output
     }
     { format.incoll.inproc.crossref output.nonnull
       format.chapter.pages output
