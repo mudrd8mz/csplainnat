@@ -216,7 +216,7 @@ FUNCTION {capitalize}  %  CHANGE mudrd8mz 2005-10-12 adding new function
 {
   duplicate$ empty$
     { pop$ "" }
-    { "u" change.case$ }
+    { "{\sc " swap$ * "}" * } %{ "u" change.case$ }
   if$
 }
 
@@ -314,9 +314,11 @@ FUNCTION {format.issn}
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { new.block "Dostupn{\'{e}} z: \url{" url * "}" * }
+    { new.block "Dostupn{\'{e}}~z: $\texttt{<{" url * "}>}$" * }
   if$
 }
+
+
 
 FUNCTION {format.doi}
 { doi empty$
@@ -802,8 +804,9 @@ FUNCTION {book}
       format.bvolume output
       format.number.series output
       new.sentence
-      address "~: " * publisher *   % CHANGE mudrd8mz 2005-10-12 
-      "publisher" output.check      
+      publisher
+      % address "~: " * publisher *   % CHANGE mudrd8mz 2005-10-12
+      "publisher" output.check
     }
     { new.block
       format.book.crossref output.nonnull
